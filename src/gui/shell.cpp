@@ -406,6 +406,14 @@ void Shell::handleRedraw(const QByteArray& name, const QVariantList& opargs)
 	} else if (name == "busy_stop"){
 		handleBusy(false);
 	} else if (name == "set_icon") {
+	} else if (name == "split") {
+		if (opargs.size() != 1) {
+			qWarning() << "Unexpected argument for split:" << opargs;
+			return;
+		}
+		/* system("nvim-qt"); */
+		/* opargs.at(0).toULongLong() */
+		qDebug() << "Received a split command " << name << opargs;
 	} else {
 		qDebug() << "Received unknown redraw notification" << name << opargs;
 	}
