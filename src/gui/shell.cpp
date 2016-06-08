@@ -411,7 +411,8 @@ void Shell::handleRedraw(const QByteArray& name, const QVariantList& opargs)
 			qWarning() << "Unexpected argument for split:" << opargs;
 			return;
 		}
-		/* system("nvim-qt"); */
+		/* system("/home/teto/neovim-qt/bin/nvim-qt"); */
+		/* system("termite"); */
 		/* opargs.at(0).toULongLong() */
 		qDebug() << "Received a split command " << name << opargs;
 	} else {
