@@ -179,10 +179,12 @@ void Shell::init()
 			this, &Shell::neovimResizeFinished);
 
 	QRect screenRect = QApplication::desktop()->availableGeometry(this);
-	MsgpackRequest *req = m_nvim->neovimObject()->ui_attach(
+	QVariantMap options;
+	options.insert("rgb", true);
+	MsgpackRequest *req = m_nvim->neovimObject()->nvim_ui_attach(
 			screenRect.width()*0.66/cellSize().width(),
 			screenRect.height()*0.66/cellSize().height(),
-			true);
+			options);
 	req->setTimeout(5000);
 	connect(req, &MsgpackRequest::timeout,
 			m_nvim, &NeovimConnector::fatalTimeout);
