@@ -121,7 +121,7 @@ bool Shell::setGuiFont(const QString& fdesc)
 Shell::~Shell()
 {
 	if (m_nvim && m_attached) {
-		m_nvim->detachUi();
+		m_nvim->neovimObject()->ui_detach();
 	}
 }
 
@@ -179,9 +179,13 @@ void Shell::init()
 			this, &Shell::neovimResizeFinished);
 
 	QRect screenRect = QApplication::desktop()->availableGeometry(this);
-	// FIXME: this API will change
-	MsgpackRequest *req = m_nvim->attachUi(screenRect.width()*0.66/cellSize().width(),
-			screenRect.height()*0.66/cellSize().height());
+	MsgpackRequest *req = m_nvim->neovimObject()->ui_attach(
+			screenRect.width()*0.66/cellSize().width(),
+			screenRect.height()*0.66/cellSize().height(),
+			true);
+	req->setTimeout(5000);
+	connect(req, &MsgpackRequest::timeout,
+			m_nvim, &NeovimConnector::fatalTimeout);
 	connect(req, &MsgpackRequest::finished,
 			this, &Shell::setAttached);
 
