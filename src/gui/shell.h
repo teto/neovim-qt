@@ -9,6 +9,7 @@
 #include <QTimer>
 #include "neovimconnector.h"
 #include "shellwidget/shellwidget.h"
+#include "popupmenu.h"
 
 #if defined(Q_OS_MAC)
 #  define DEFAULT_FONT "Courier New"
@@ -88,6 +89,9 @@ protected:
 	virtual void handleSetTitle(const QVariantList& opargs);
 	virtual void handleSetScrollRegion(const QVariantList& opargs);
 	virtual void handleBusy(bool);
+	virtual void handlePopupMenuShow(const QVariantList& items,
+			int64_t selected, int64_t row, int64_t col);
+	virtual void handlePopupMenuSelect(int64_t selected);
 
 	void neovimMouseEvent(QMouseEvent *ev);
 	virtual void mousePressEvent(QMouseEvent *ev) Q_DECL_OVERRIDE;
@@ -125,6 +129,7 @@ private:
 
 	// Properties
 	bool m_neovimBusy;
+	PopupMenu m_pum;
 };
 
 } // Namespace
