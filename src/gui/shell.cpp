@@ -188,6 +188,7 @@ void Shell::init()
 	QVariantMap options;
 	options.insert("rgb", true);
 	options.insert("popupmenu_external", true);
+	options.insert("cmdline_external", true);
 	MsgpackRequest *req = m_nvim->neovimObject()->nvim_ui_attach(
 			screenRect.width()*0.66/cellSize().width(),
 			screenRect.height()*0.66/cellSize().height(),
@@ -430,6 +431,13 @@ void Shell::handleRedraw(const QByteArray& name, const QVariantList& opargs)
 		}
 		// Neovim uses -1 for 'no selection' and so does Qt
 		handlePopupMenuSelect(opargs.at(0).toLongLong());
+	} else if (name == "cmdline") {
+		/* if (opargs.size() != 1 || !opargs.at(0).canConvert<qint64>()) { */
+			qWarning() << "received cmdline event for redraw:" << name << opargs;
+			return;
+		/* } */
+		// Neovim uses -1 for 'no selection' and so does Qt
+		/* handlePopupMenuSelect(opargs.at(0).toLongLong()); */
 	} else if (name == "popupmenu_show") {
 		if (opargs.size() != 4
 				|| !opargs.at(1).canConvert<qint64>()
